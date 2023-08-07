@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Compras</title>
+</head>
+<body>
+<h1>Compras</h1>
+
+<h2>Cadastre o produto</h2>
+<form method="post" action="/petshop" th:object="${produto}">
+
+    <label for="nome">Nome:</label>
+    <input id="nome" name="nome" th:value="${produto.nome}">
+
+    <label for="valor">Valor:</label>
+    <input id="valor" name="valor" th:value="${produto.valor}">
+
+    <label for="quantidade">Quantidade: </label>
+    <input id="quantidade" name="quantidade" th:value="${produto.quantidade}">
+
+    <input type="submit" value="Cadastrar">
+</form>
+
+<h2>Carrinho</h2>
+
+<table>
+    <thead>
+    <th>Nome</th>
+    <th>Preço</th>
+    <th>Quantidade</th>
+    </thead>
+
+    <tbody>
+    <tr th:each="produto : ${lista}" th:if="${produto != null}">
+        <td th:text="${produto.nome}"></td>
+        <td th:text="${produto.valor}"></td>
+        <td th:text="${produto.quantidade}"></td>
+        <td>
+            <a th:href="@{/petshop/editar-produto(id=${produto.id})}">Editar</a>
+            <form th:attr="action=@{/petshop/produto/{id}(id=${produto.id})}" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <input type="submit" value="Excluir">
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form method="post" action="/petshop/fechar-compra">
+    <input type="submit" value="Finalizar Compra">
+</form>
+
+</body>
+</html>
